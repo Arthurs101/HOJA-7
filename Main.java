@@ -1,22 +1,34 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.util.Scanner;
 
- public class Main{
+public class Main{
     public static void main(String[] args) {
+        BINNODE English = new BINNODE();
+        BINNODE French = new BINNODE();
+        //leet el archivo 
+        try {
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("Ingrese el archivo con los datos");
+            String directory = scanner.nextLine();
+            BufferedReader reader = new BufferedReader(new FileReader(directory));
+            String line;
+            while ((line = reader.readLine()) != null){//agregar al diccionario correspondiente
+                String[] parts = line.split(",");
+                English.add(parts[0], parts[1]);
+                French.add(parts[2], parts[1]);
+            }
+        }catch (Exception e) {
+            System.out.println("Error inesperado, cerrando sesion");
+            System.exit(1);
+        }
+        System.out.println("English" + "\n" );
+        English.traverseInOrder(English.root);
+        System.out.println("\nFrench" + "\n" );
+        French.traverseInOrder(French.root);
+
         
-        System.out.println("Binary tree test");
-        BinaryTree test = new BinaryTree();
-        test.add("a"); 
-        test.add("b"); 
-        test.add("c"); 
-        test.traverseInOrder(test.root);
-        System.out.println();
-        test.add("d"); 
-        test.traverseInOrder(test.root);
-        test.delete("a");
-        System.out.println();
-        test.traverseInOrder(test.root);
-        test.delete("c");
-        System.out.println();
-        test.traverseInOrder(test.root);
+        
     } 
  }
  

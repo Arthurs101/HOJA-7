@@ -1,27 +1,26 @@
-
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
 
 //Obtenido y adaptado de https://github.com/eugenp/tutorials/blob/master/data-structures/src/main/java/com/baeldung/tree/BinaryTree.java
-public class BinaryTree {
+public class BINNODE {
 
-    Node root;
+    Noder root;
 
-    public void add(String value) {
-        root = addRecursive(root, value);
+    public void add(String value, String prefix) {
+        root = addRecursive(root, value,prefix);
     }
 
-    private Node addRecursive(Node current, String value) {
+    private Noder addRecursive(Noder current, String value, String prefix) {
 
         if (current == null) {
-            return new Node(value);
+            return new Noder(value,prefix);
         }
 
-        if (value.compareTo(current.value) < 0) {
-            current.left = addRecursive(current.left, value);
-        } else if (value.compareTo(current.value) > 0) {
-            current.right = addRecursive(current.right, value);
+        if (value.compareTo(String.valueOf(current.data.getValue())) < 0) {
+            current.left = addRecursive(current.left, value,prefix);
+        } else if (value.compareTo(String.valueOf(current.data.getValue())) > 0) {
+            current.right = addRecursive(current.right, value,prefix);
         }
 
         return current;
@@ -35,24 +34,41 @@ public class BinaryTree {
         return getSizeRecursive(root);
     }
 
-    private int getSizeRecursive(Node current) {
+    private int getSizeRecursive(Noder current) {
         return current == null ? 0 : getSizeRecursive(current.left) + 1 + getSizeRecursive(current.right);
+    }
+    public Noder getNode(String value) {
+        return getRecursive(root, value);
+    }
+
+    private Noder getRecursive(Noder current, String value) {
+        if (current == null) {
+            return null;
+        }
+
+        if (value.equals((String)current.data.getKey())) {
+            return current;
+        }
+
+        return value.compareTo((String)current.data.getKey()) < 0
+            ? getRecursive(current.left, value)
+          : getRecursive (current.right, value);
     }
 
     public boolean containsNode(String value) {
         return containsNodeRecursive(root, value);
     }
 
-    private boolean containsNodeRecursive(Node current, String value) {
+    private boolean containsNodeRecursive(Noder current, String value) {
         if (current == null) {
             return false;
         }
 
-        if (value == current.value) {
+        if (value.equals((String)current.data.getKey())) {
             return true;
         }
 
-        return value.compareTo(current.value) < 0
+        return value.compareTo((String)current.data.getKey()) < 0
             ? containsNodeRecursive(current.left, value)
           : containsNodeRecursive(current.right, value);
     }
@@ -61,12 +77,12 @@ public class BinaryTree {
         root = deleteRecursive(root, value);
     }
 
-    private Node deleteRecursive(Node current, String value) {
+    private Noder deleteRecursive(Noder current, String value) {
         if (current == null) {
             return null;
         }
 
-        if (value == current.value) {
+        if (value.equals((String)current.data.getKey())) {
             // Case 1: no children
             if (current.left == null && current.right == null) {
                 return null;
@@ -83,11 +99,11 @@ public class BinaryTree {
 
             // Case 3: 2 children
             String smallestValue = findSmallestValue(current.right);
-            current.value = smallestValue;
+            current.data.setKey(smallestValue);
             current.right = deleteRecursive(current.right, smallestValue);
             return current;
         }
-        if (value.compareTo(current.value) < 0)  {
+        if (value.compareTo((String) current.data.getKey()) < 0)  {
             current.left = deleteRecursive(current.left, value);
             return current;
         }
@@ -96,31 +112,31 @@ public class BinaryTree {
         return current;
     }
 
-    private String findSmallestValue(Node root) {
-        return root.left == null ? root.value : findSmallestValue(root.left);
+    private String findSmallestValue(Noder root) {
+        return root.left == null ? (String) root.data.getKey() : findSmallestValue(root.left);
     }
 
-    public void traverseInOrder(Node node) {
+    public void traverseInOrder(Noder node) {
         if (node != null) {
             traverseInOrder(node.left);
-            visit(node.value);
+            visit((String)node.data.getKey(),(String)node.data.getValue());
             traverseInOrder(node.right);
         }
     }
 
-    public void traversePreOrder(Node node) {
+    public void traversePreOrder(Noder node) {
         if (node != null) {
-            visit(node.value);
+            visit((String)node.data.getKey(),(String)node.data.getValue());
             traversePreOrder(node.left);
             traversePreOrder(node.right);
         }
     }
 
-    public void traversePostOrder(Node node) {
+    public void traversePostOrder(Noder node) {
         if (node != null) {
             traversePostOrder(node.left);
             traversePostOrder(node.right);
-            visit(node.value);
+            visit((String)node.data.getKey(),(String)node.data.getValue());
         }
     }
 
@@ -129,14 +145,14 @@ public class BinaryTree {
             return;
         }
 
-        Queue<Node> nodes = new LinkedList<>();
+        Queue<Noder> nodes = new LinkedList<>();
         nodes.add(root);
 
         while (!nodes.isEmpty()) {
 
-            Node node = nodes.remove();
+            Noder node = nodes.remove();
 
-            System.out.print(" " + node.value);
+            System.out.print(" " + node.data.getKey());
 
             if (node.left != null) {
                 nodes.add(node.left);
@@ -149,8 +165,8 @@ public class BinaryTree {
     }
 
     public void traverseInOrderWithoutRecursion() {
-        Stack<Node> stack = new Stack<>();
-        Node current = root;
+        Stack<Noder> stack = new Stack<>();
+        Noder current = root;
 
         while (current != null || !stack.isEmpty()) {
             while (current != null) {
@@ -158,20 +174,20 @@ public class BinaryTree {
                 current = current.left;
             }
 
-            Node top = stack.pop();
-            visit(top.value);
+            Noder top = stack.pop();
+            visit((String)current.data.getKey(),(String)current.data.getValue());
             current = top.right;
         }
     }
 
     public void traversePreOrderWithoutRecursion() {
-        Stack<Node> stack = new Stack<>();
-        Node current = root;
+        Stack<Noder> stack = new Stack<>();
+        Noder current = root;
         stack.push(root);
 
         while (current != null && !stack.isEmpty()) {
             current = stack.pop();
-            visit(current.value);
+            visit((String)current.data.getKey(),(String)current.data.getValue());
 
             if (current.right != null)
                 stack.push(current.right);
@@ -182,9 +198,9 @@ public class BinaryTree {
     }
     
     public void traversePostOrderWithoutRecursion() {
-        Stack<Node> stack = new Stack<>();
-        Node prev = root;
-        Node current = root;
+        Stack<Noder> stack = new Stack<>();
+        Noder prev = root;
+        Noder current = root;
         stack.push(root);
 
         while (current != null && !stack.isEmpty()) {
@@ -194,7 +210,7 @@ public class BinaryTree {
 
             if (!hasChild || isPrevLastChild) {
                 current = stack.pop();
-                visit(current.value);
+                visit((String)current.data.getKey(),(String)current.data.getValue());
                 prev = current;
             } else {
                 if (current.right != null) {
@@ -207,19 +223,9 @@ public class BinaryTree {
         }   
     }    
     
-    private void visit(String value) {
-        System.out.print(" " + value);        
+    private void visit(String value, String prefix) {
+        System.out.print(" " + value + "-" + prefix);        
     }
     
-    class Node {
-        String value;
-        Node left;
-        Node right;
-
-        Node(String value) {
-            this.value = value;
-            right = null;
-            left = null;
-        }
-    }
+    
 }
