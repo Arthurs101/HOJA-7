@@ -117,11 +117,5 @@ class BST_class {
         return search_Recursive(root.right, key); 
     } 
 
-    void edit(int key, int newval) { 
-        if(search(key)){
-            deleteKey(key);
-            insert(newval);
-
-        }else{System.out.println("no such key");}
-    }
+  
 }

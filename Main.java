@@ -33,11 +33,7 @@
         System.out.println("\nKey 50 found in BST:" + ret_val );
         ret_val = bst.search(7);
         System.out.println("\nKey 7 found in BST:" + ret_val );
-        bst.edit(90, 10);
-        bst.inorder();
-        
-
-
+        bst.inorder(); 
     } 
  }
  
