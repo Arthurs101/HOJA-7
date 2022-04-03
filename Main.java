@@ -7,27 +7,30 @@ import java.util.Scanner;
 
 public class Main{
     public static void main(String[] args) {
-        BINNODE English = new BINNODE();
-        BINNODE French = new BINNODE();
+        GenericBST English = new GenericBST();
+        GenericBST French = new GenericBST();
         boolean translate = false;
         int mode = -1; // -1 sin idioma definido, 0 English,  1 Frenchy
         //leet el archivo 
         try {
             Scanner scanner = new Scanner(System.in);
             System.out.println("Ingrese el archivo con los datos");
-            String directory = scanner.nextLine();
+            //String directory = scanner.nextLine();
+            String directory = "D:\\Universidad\\SEMESTRE 3\\Algoritmos y Datos\\HOJA7\\diccionario.txt";
             BufferedReader reader = new BufferedReader(new FileReader(directory));
             String line;
             while ((line = reader.readLine()) != null){//agregar al diccionario correspondiente
-                String[] parts = line.split(",");
-                English.add(parts[0].toLowerCase(), parts[1].toLowerCase());
-                French.add(parts[2].toLowerCase(), parts[1].toLowerCase());
+                line = line.replace(",", " ");
+                String[] parts = line.split("\\s");
+                English.insert(parts[0].strip().toLowerCase(), parts[1].toLowerCase());
+                French.insert(parts[2].strip().toLowerCase(), parts[1].toLowerCase());
             }
             translate = true;
         }catch (Exception e) {
             System.out.println("Error inesperado, cerrando sesion");
             System.exit(1);
         }
+        
         if(translate){
         Scanner op = new Scanner(System.in);
         while (true) {
@@ -47,24 +50,22 @@ public class Main{
                             String line;
                             ArrayList<String> notfoundTokens = new ArrayList<String>();//ArrayList con las palabras no encontradas en los diccionarios
                             while ((line = reader.readLine()) != null){
+                                line = removePunctuations(line);
                                 String[] tokens = line.split(" ");
                                 ArrayList<String> tokensList = new ArrayList<String>();//ArrayList con los resultados de traduccion
                                 for(String word: tokens){
-                                    if(English.containsNode(word.toLowerCase())){
+                                    if(English.contains(word.toLowerCase())){
                                         mode = 0;
-                                        break;
                                     }
-                                    if(French.containsNode(word.toLowerCase())){
+                                    if(French.contains(word.toLowerCase())){
                                         mode = 1;
-                                        break;
                                     }
                                 }
                                 switch(mode){
                                     case 0 -> {
                                         for(String word: tokens){
-                                            if(English.containsNode(word.toLowerCase())){
-                                                Noder value = English.getNode(word.toLowerCase());
-                                                tokensList.add((String)value.data.getValue());
+                                            if(English.contains(word.toLowerCase())){
+                                                tokensList.add((String) English.getValue(word.toLowerCase()));
                                             }else{
                                                 notfoundTokens.add(word);
                                                 tokensList.add("*" + word + "*");
@@ -78,9 +79,8 @@ public class Main{
                                     }
                                     case 1 -> {
                                         for(String word: tokens){
-                                            if(French.containsNode(word.toLowerCase())){
-                                                Noder value = French.getNode(word.toLowerCase());
-                                                tokensList.add((String)value.data.getValue());
+                                            if(French.contains(word.toLowerCase())){
+                                                tokensList.add((String) French.getValue(word.toLowerCase()));
                                             }else{
                                                 notfoundTokens.add(word);
                                                 tokensList.add("*" + word + "*");
@@ -115,18 +115,20 @@ public class Main{
                     }
                     case 5->{
                         System.out.println("Diccionario en Ingles");
-                        English.traverseInOrder(English.root);
+                        English.print();
                         System.out.println("\n Diccionario en Frances");
-                        French.traverseInOrder(French.root);
+                        French.print();
                         System.out.println();
                     }
                     case 6 ->{
                         System.out.println("ingrese palabra");
                         Scanner scanner = new Scanner(System.in);
                         String word = scanner.nextLine();
-                        if(English.containsNode(word.toLowerCase())){
-                            Noder wordy = English.getNode(word.toLowerCase());
-                            System.out.println(wordy.data.getValue());
+                        if(English.contains(word.toLowerCase())){
+                            System.out.println(English.getValue(word.toLowerCase()));
+                        }
+                        if(French.contains(word.toLowerCase())){
+                            System.out.println(French.getValue(word.toLowerCase()));
                         }
 
                     }
@@ -138,12 +140,11 @@ public class Main{
             
             
         }
-    }
-       
-        
-        
     } 
-    
+}
+public static String removePunctuations(String source) {
+    return source.replaceAll("\\p{Punct}", "");
+}
 }
 
  

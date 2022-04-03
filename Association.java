@@ -1,23 +1,23 @@
 /*
 Clase referente a una clase Association<K,V>
 */
-public class Association<K,V> {
-    private K key;
-    private V value;
-    public Association(K KEY, V VALUE) {
+public class Association<V,K> {
+    public V key;
+    public K value;
+    public Association(V KEY, K VALUE) {
         key = KEY;
         value = VALUE;
     }
-    public K getKey() {
+    public V getKey() {
         return key;
     }
-    public V getValue() {
+    public K getValue() {
         return value;
     }
-    public void setKey(K key) {
+    public void setKey(V key) {
         this.key = key; 
     }
-    public void setValue(V value) {
+    public void setValue(K value) {
         this.value = value;
     }
 
