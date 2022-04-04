@@ -43,6 +43,7 @@ public class Main{
             try {
                 switch(op.nextInt()){
                     case 1 ->{
+                        System.out.println("ingrese direccion de archivo");
                         Scanner scanner = new Scanner(System.in);
                         try{
                             String file = scanner.nextLine();
@@ -99,6 +100,18 @@ public class Main{
                                     }
                                 }
                             }
+                            for(String newword : notfoundTokens){
+                                System.out.println("agregar significado para " + newword);
+                                String meaning =  scanner.nextLine();
+                                switch(mode){
+                                    case 0->{
+                                        English.insert(newword.toLowerCase(), meaning.toLowerCase());
+                                    }
+                                    case 1->{
+                                        French.insert(newword.toLowerCase(), meaning.toLowerCase());
+                                    }
+                                }
+                            }
                         }
                         catch(FileNotFoundException e){
                             System.out.println("file not found");
@@ -108,7 +121,61 @@ public class Main{
                             System.out.println("unexpected error");
                             scanner.next();
                         }
+                        
+                    }
+                    case 2 ->{
+                        System.out.println("seleccione el idioma a editar");
+                        System.out.println("1. English");
+                        System.out.println("2. Français");
+                        try { 
+                            Scanner scanner = new Scanner(System.in);
+                            System.out.println("ingrese palabra");
+                            String word = scanner.nextLine();
+                            switch(op.nextInt()){
+                                
+                                case 1 ->{
+                                    
+                                    if(English.contains(word.toLowerCase())){
+                                        System.out.println("ingrese nuevo significado");
+                                        String newmeanings = scanner.nextLine();
+                                        English.delete(word.toLowerCase());
+                                        English.insert(word.toLowerCase(), newmeanings.toLowerCase());
+                                        
+                                    }else{
+                                        System.out.println("word not found");
+                                    }
+                                }
+                                case 2 ->{
+                                    
+                                    if(French.contains(word.toLowerCase())){
+                                        System.out.println("ingrese nuevo significado");
+                                        String newmeanings = scanner.nextLine();
+                                        French.delete(word.toLowerCase());
+                                        French.insert(word.toLowerCase(), newmeanings.toLowerCase());
+                                    }else{
+                                        System.out.println("word not found");
+                                    }
+                                }
+                            }
 
+                        }catch(InputMismatchException ie){
+                            System.out.println("entrada invalida");
+                            op.next();
+                        }
+                    }
+                    case 3 ->{
+                        System.out.println("ingrese la palabra a borrar");
+                        Scanner scanner = new Scanner(System.in);
+                        String word = scanner.nextLine();
+                            if(English.contains(word.toLowerCase())){
+                                English.delete(word.toLowerCase());
+                                System.out.println("deleted");
+                            }else if(French.contains(word.toLowerCase())){
+                                French.delete(word.toLowerCase());
+                                System.out.println("deleted");
+                            }else{
+                                System.out.println("word not found");
+                            }
                     }
                     case 4->{
                         System.exit(0);

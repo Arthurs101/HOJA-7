@@ -1,3 +1,7 @@
+/*
+Obtenido y adaptado de https://stackoverflow.com/questions/11263244/java-how-do-i-implement-a-generic-binary-search-tree
+posteado por LaurentBaj
+*/
 public class GenericBST<V extends Comparable<V>,K> {
 
     private class Node extends Association<V,K>{
@@ -42,7 +46,49 @@ public class GenericBST<V extends Comparable<V>,K> {
         return getValue(root, key);
 
     }
+    
+    public void delete(V value) {
+        root = deleteRecursive(root,value);
+    }
 
+    private Node deleteRecursive(Node node, V value) {
+        if (node == null){
+            return null;
+        }
+        if(value.compareTo(node.key) == 0){
+            //no childs
+            if (node.left == null && node.right == null) {
+                return null;
+            }
+            // 1 child
+            
+            if (node.right == null) {
+                return node.left;
+            }
+
+            if (node.left == null) {
+                return node.right;
+            }
+            // 2 children
+
+            Node smallestValue = findSmallestValue(node.right);
+            node.key = smallestValue.key;
+            node.value = smallestValue.value;
+            node.right = deleteRecursive(node.right, smallestValue.key);
+            return node;
+        }if(value.compareTo(node.key) < 0){
+            node.left = deleteRecursive(node.left, value);
+            return node;
+        }
+        node.right = deleteRecursive(node.right, value);
+        return node;
+    }
+
+    private Node findSmallestValue(Node node) {
+        return node.left == null? node : findSmallestValue(node.left);
+    }
+    
+    
     private K getValue(Node node, V key) {
         if (key.compareTo(node.key) == 0) {
             return node.value;
