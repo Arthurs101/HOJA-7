@@ -19,37 +19,45 @@ public class GenericBST<V extends Comparable<V>,K> {
         return size;
     }
     
+    public Node getRoot() {
+        return root;
+    }
+
+    public void setRoot(Node root) {
+        this.root = root;
+    }
+
     public GenericBST() {//constructor
-        this.root = null;
+        this.setRoot(null);
         this.size = 0;
     }
     
     public boolean isEmpty() {//metodo para ver si esta vacio
-        if (root == null) return true;
+        if (getRoot() == null) return true;
         else return false;
     }
     
     public void insert(V value , K transaltion) {//insertar nodo
         size++;//aumentar tamano
-        if (isEmpty()) root = new Node(value, transaltion);//si es el primer nodo colocarlo como raiz, de lo contrario ir al metodo recursivo
-        else insert(root, value, transaltion);
+        if (isEmpty()) setRoot(new Node(value, transaltion));//si es el primer nodo colocarlo como raiz, de lo contrario ir al metodo recursivo
+        else insert(getRoot(), value, transaltion);
     }
     
     public boolean contains(V value) {//ver si tiene un valor
-        return contains(root, value);
+        return contains(getRoot(), value);
     }
     
     public void print() {//mostrar contenido del arbol
-        print(root);//metodo recursivo para imprimir
+        print(getRoot());//metodo recursivo para imprimir
     }
     
     public K getValue(V key) {//devuelve el valor en el nodo con la llave
-        return getValue(root, key);//metodo recursivo de busqueda que devuelve valor
+        return getValue(getRoot(), key);//metodo recursivo de busqueda que devuelve valor
 
     }
     
     public void delete(V value) {//elimitar nodo con llave
-        root = deleteRecursive(root,value);
+        setRoot(deleteRecursive(getRoot(),value));
     }
 
     private Node deleteRecursive(Node node, V value) {//metodo recursivo de eliminacion
@@ -116,7 +124,7 @@ public class GenericBST<V extends Comparable<V>,K> {
     }
     
     private void print(Node node) {//recoorer nodos y mostrarlos en Inorder
-        if (root == null) return;
+        if (getRoot() == null) return;
         if (node.left != null) print(node.left);
         System.out.println(node.key + ": " + node.value);
         if (node.right != null) print(node.right);
