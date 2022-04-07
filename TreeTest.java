@@ -3,16 +3,17 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.io.BufferedReader;
 
+//clase de prueba para el arbol
 import org.junit.Test;
 
 public class TreeTest {
     @Test
-    public void searchTest(){
+    public void searchTest(){//prueba de isnercion y busqueda, 
         GenericBST English = new GenericBST();
         try {
             
-            //String directory = scanner.nextLine();
-            String directory = "D:\\Universidad\\SEMESTRE 3\\Algoritmos y Datos\\HOJA7\\diccionario.txt";
+            
+            String directory = "D:\\Universidad\\SEMESTRE 3\\Algoritmos y Datos\\HOJA7\\diccionario.txt";//directorio del archivo en mi pc
             BufferedReader reader = new BufferedReader(new FileReader(directory));
             String line;
             while ((line = reader.readLine()) != null){//agregar al diccionario correspondiente

@@ -62,12 +62,12 @@ public class Main{
                                         mode = 1;
                                     }
                                 }
-                                switch(mode){
+                                switch(mode){ //segun el idioma detectado se traducira
                                     case 0 -> {
-                                        for(String word: tokens){
+                                        for(String word: tokens){ //recoreer el array de las palabras por lineas
                                             if(English.contains(word.toLowerCase())){
                                                 tokensList.add((String) English.getValue(word.toLowerCase()));
-                                            }else{
+                                            }else{//si no esta en el diccionario, colocarlo entre * * em e; array de resultado y agregarlo al array de palabras no encontradas
                                                 notfoundTokens.add(word);
                                                 tokensList.add("*" + word + "*");
                                             }
@@ -78,7 +78,7 @@ public class Main{
                                         }
                                         System.out.println(transaltion);
                                     }
-                                    case 1 -> {
+                                    case 1 -> {//realiza lo mismo que el case 0 solo que con el frances
                                         for(String word: tokens){
                                             if(French.contains(word.toLowerCase())){
                                                 tokensList.add((String) French.getValue(word.toLowerCase()));
@@ -87,20 +87,20 @@ public class Main{
                                                 tokensList.add("*" + word + "*");
                                             }
                                         }
-                                        String transaltion = "";
+                                        String transaltion = "";//mostrar el resultado de la traduccion
                                         for(String word : tokensList){
                                             transaltion = transaltion + " " + word;
                                         }
                                         System.out.println(transaltion);
 
                                     }
-                                    case -1 ->{
+                                    case -1 ->{//si no se detecta idioma, mostrarlo
                                         System.out.println("no se reconoce el idioma");
                                         break;
                                     }
                                 }
                             }
-                            for(String newword : notfoundTokens){
+                            for(String newword : notfoundTokens){//agregar las palabras sin significado a los diccionarios se agrega segun el idioma detectado en la traduccion
                                 System.out.println("agregar significado para " + newword);
                                 String meaning =  scanner.nextLine();
                                 switch(mode){
@@ -113,7 +113,7 @@ public class Main{
                                 }
                             }
                         }
-                        catch(FileNotFoundException e){
+                        catch(FileNotFoundException e){//catch de no encontrar el archivo y otro para cualquier error
                             System.out.println("file not found");
                             scanner.next();
                         }
@@ -123,7 +123,7 @@ public class Main{
                         }
                         
                     }
-                    case 2 ->{
+                    case 2 ->{//editar significado
                         System.out.println("seleccione el idioma a editar");
                         System.out.println("1. English");
                         System.out.println("2. Français");
@@ -133,19 +133,19 @@ public class Main{
                             String word = scanner.nextLine();
                             switch(op.nextInt()){
                                 
-                                case 1 ->{
+                                case 1 ->{//segun el diccionario seleccionado deditar
                                     
-                                    if(English.contains(word.toLowerCase())){
+                                    if(English.contains(word.toLowerCase())){//verificar que exista
                                         System.out.println("ingrese nuevo significado");
                                         String newmeanings = scanner.nextLine();
-                                        English.delete(word.toLowerCase());
-                                        English.insert(word.toLowerCase(), newmeanings.toLowerCase());
+                                        English.delete(word.toLowerCase()); //remover nodo con significado anterior
+                                        English.insert(word.toLowerCase(), newmeanings.toLowerCase()); //insertar nuevo nodo
                                         
                                     }else{
                                         System.out.println("word not found");
                                     }
                                 }
-                                case 2 ->{
+                                case 2 ->{//realiza lo mismo que el case 1 solo que con el frances
                                     
                                     if(French.contains(word.toLowerCase())){
                                         System.out.println("ingrese nuevo significado");
@@ -163,35 +163,35 @@ public class Main{
                             op.next();
                         }
                     }
-                    case 3 ->{
+                    case 3 ->{//borrar palabra
                         System.out.println("ingrese la palabra a borrar");
                         Scanner scanner = new Scanner(System.in);
                         String word = scanner.nextLine();
-                            if(English.contains(word.toLowerCase())){
-                                English.delete(word.toLowerCase());
+                            if(English.contains(word.toLowerCase())){//detectar en que diccionario existe
+                                English.delete(word.toLowerCase()); //borrar palabra
                                 System.out.println("deleted");
                             }else if(French.contains(word.toLowerCase())){
-                                French.delete(word.toLowerCase());
+                                French.delete(word.toLowerCase()); //borrar palabra
                                 System.out.println("deleted");
                             }else{
                                 System.out.println("word not found");
                             }
                     }
-                    case 4->{
+                    case 4->{ // salir del programa
                         System.exit(0);
                     }
-                    case 5->{
+                    case 5->{ //mostrar contenido en INORDER
                         System.out.println("Diccionario en Ingles");
                         English.print();
                         System.out.println("\n Diccionario en Frances");
                         French.print();
                         System.out.println();
                     }
-                    case 6 ->{
+                    case 6 ->{//traducir una sola palabra
                         System.out.println("ingrese palabra");
                         Scanner scanner = new Scanner(System.in);
                         String word = scanner.nextLine();
-                        if(English.contains(word.toLowerCase())){
+                        if(English.contains(word.toLowerCase())){//detectar si esta en un diccionario y devolver el significado
                             System.out.println(English.getValue(word.toLowerCase()));
                         }
                         if(French.contains(word.toLowerCase())){
@@ -200,7 +200,7 @@ public class Main{
 
                     }
                 }
-            } catch (InputMismatchException e){
+            } catch (InputMismatchException e){//se ingresa un caracter que no sea un int
                 System.out.println("Entrada no valida");
                 op.next();
             }
