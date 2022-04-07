@@ -15,8 +15,8 @@ public class Main{
         try {
             Scanner scanner = new Scanner(System.in);
             System.out.println("Ingrese el archivo con los datos");
-            //String directory = scanner.nextLine();
-            String directory = "D:\\Universidad\\SEMESTRE 3\\Algoritmos y Datos\\HOJA7\\diccionario.txt";
+            String directory = scanner.nextLine();
+            //String directory = "D:\\Universidad\\SEMESTRE 3\\Algoritmos y Datos\\HOJA7\\diccionario.txt";
             BufferedReader reader = new BufferedReader(new FileReader(directory));
             String line;
             while ((line = reader.readLine()) != null){//agregar al diccionario correspondiente
